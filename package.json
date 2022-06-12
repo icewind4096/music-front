@@ -10,10 +10,12 @@
   "dependencies": {
     "@quasar/extras": "^1.12.5",
     "axios": "^0.26.0",
+    "js-cookie": "^3.0.1",
     "nprogress": "^0.2.0",
     "quasar": "^2.5.5",
     "vue": "^3.2.25",
-    "vue-router": "^4.0.15"
+    "vue-router": "^4.0.15",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@quasar/vite-plugin": "^1.0.4",

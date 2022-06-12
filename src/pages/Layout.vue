@@ -1,16 +1,11 @@
 <template>
   <q-layout view="hHh lpR fFf">
-
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-          </q-avatar>
-          风之谷
-        </q-toolbar-title>
+        <q-toolbar-title>风之谷</q-toolbar-title>
+        <q-space/>
+        <q-avatar color="teal" text-color="white" >{{nicknameFirstWord}}</q-avatar>
       </q-toolbar>
     </q-header>
 
@@ -25,18 +20,22 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import {computed, ref } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   name: "Layout",
   setup () {
-    const leftDrawerOpen = ref(false)
-
+    const leftDrawerOpen = ref(false);
+    const store = useStore()
     return {
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      },
+      nicknameFirstWord: computed(() => {
+        return store.getters['user/nicknameFirstWord'];
+      })
     }
   }
 }
