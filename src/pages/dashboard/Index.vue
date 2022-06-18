@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     这个是主页 {{ nickname }}
     <q-btn @click="logout">退出</q-btn>
   </div>

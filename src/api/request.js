@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from "../store";
+import {Notify} from "quasar";
 
 const baseURL = import.meta.env.VITE_API_HOST
 
@@ -22,21 +23,30 @@ instance.interceptors.request.use(
     error => {
         // Do something with request error
         console.log(error) // for debug
-        Promise.reject(error)
+        return Promise.reject(error)
     }
 )
 
 // response 拦截器
 instance.interceptors.response.use(
     response => {
+        /**
+         * code为非20000是抛错 可结合自己业务进行修改
+         */
         return response;
+    },
+   error => {
+       console.log('err' + error) // for debug
+       Notify.create({
+           type: 'negative',
+           message: error.message,
+           position: 'top',
+       })
+       return Promise.reject(error)
     }
 )
 // service.interceptors.response.use(
 //     response => {
-//         /**
-//          * code为非20000是抛错 可结合自己业务进行修改
-//          */
 //         const res = response.data
 //         if (res.code !== 20000) {
 //             Message({

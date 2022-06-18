@@ -479,7 +479,7 @@
    3.1 引入vuex
    ```javascript
       //引入vuex
-      import store from './store/index'
+      import store from './store/dashboard'
    ```
    3.2 使用
    ```javascript
