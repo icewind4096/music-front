@@ -14,9 +14,8 @@ const instance = axios.create({
 // request拦截器
 instance.interceptors.request.use(
     config => {
-        console.log(store.state.user.token)
         if (store.state.user.token) {
-            config.headers['Authorization'] = store.state.user.token // 让每个请求携带自定义token
+            config.headers['Authorization'] = 'Bearer ' + store.state.user.token // 让每个请求携带自定义token
         }
         return config
     },
@@ -33,7 +32,7 @@ instance.interceptors.response.use(
         /**
          * code为非20000是抛错 可结合自己业务进行修改
          */
-        return response;
+        return response.data;
     },
    error => {
        console.log('err' + error) // for debug
