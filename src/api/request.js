@@ -32,10 +32,15 @@ instance.interceptors.response.use(
         /**
          * code为非20000是抛错 可结合自己业务进行修改
          */
-        return response.data;
+        if (response.data.code != 20000) {
+            handleErrorResponse(response);
+            return Promise.reject(response.data);
+        }
+
+        return response.data.data;
     },
    error => {
-       console.log('err' + error) // for debug
+       console.log('err===>' + error) // for debug
        Notify.create({
            type: 'negative',
            message: error.message,
@@ -44,48 +49,21 @@ instance.interceptors.response.use(
        return Promise.reject(error)
     }
 )
-// service.interceptors.response.use(
-//     response => {
-//         const res = response.data
-//         if (res.code !== 20000) {
-//             Message({
-//                 message: res.message,
-//                 type: 'error',
-//                 duration: 5 * 1000
-//             })
-//
-//             // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-//             if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-//                 MessageBox.confirm(
-//                     '你已被登出，可以取消继续留在该页面，或者重新登录',
-//                     '确定登出',
-//                     {
-//                         confirmButtonText: '重新登录',
-//                         cancelButtonText: '取消',
-//                         type: 'warning'
-//                     }
-//                 ).then(() => {
-//                     store.dispatch('FedLogOut').then(() => {
-//                         location.reload() // 为了重新实例化vue-router对象 避免bug
-//                     })
-//                 })
-//             }
-//             return Promise.reject('error')
-//         } else {
-//             return response.data
-//         }
-//     },
-//     error => {
-//         console.log('err' + error) // for debug
-//         Message({
-//             message: error.message,
-//             type: 'error',
-//             duration: 5 * 1000
-//         })
-//         return Promise.reject(error)
-//     }
-// )
 
+const handleErrorResponse = response =>{
+    Notify.create({
+        type: 'negative',
+        message: response.data.message,
+        position: 'top',
+    })
+
+    /**
+     * code为非20000错误要细分，不能全部都登出，todo
+     */
+    store.dispatch("user/logout").then(() =>
+        window.location.reload
+    );
+}
 
 const {get, post, put} = instance;
 

@@ -40,7 +40,7 @@
 <script>
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-import {useRoute, useRouter} from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   name: "Login",
@@ -51,10 +51,12 @@ export default {
     const store = useStore();
     const router = useRouter();
     const route = useRoute();
+
     const onSubmit = (username, password) =>{
       store.dispatch('user/login', {username, password}).then(response => {
-        store.dispatch("user/fetchCurrentUser");
-        router.push({path: route.query.redirect || '/'});
+        store.dispatch("user/fetchCurrentUser").then(() => {
+            router.push({path: route.query.redirect || '/'})
+        });
       })
     }
     return {

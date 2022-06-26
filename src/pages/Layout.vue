@@ -5,7 +5,15 @@
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
         <q-toolbar-title>风之谷</q-toolbar-title>
         <q-space/>
-        <q-avatar color="teal" text-color="white" >{{nicknameFirstWord}}</q-avatar>
+        <q-avatar color="teal" text-color="white" >{{nicknameFirstWord}}
+          <q-menu v-model="showing">
+            <q-list style="min-width: 100px">
+              <q-item clickable v-close-popup @click="logout">
+                <q-item-section>登出</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-avatar>
       </q-toolbar>
     </q-header>
 
@@ -60,7 +68,10 @@ export default {
       menuRoutes,
       nicknameFirstWord: computed(() => {
         return store.getters['user/nicknameFirstWord'];
-      })
+      }),
+      logout: () => {
+        store.dispatch('user/logout').then(()=>window.location.reload())
+      }
     }
   }
 }

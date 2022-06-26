@@ -68,12 +68,6 @@ export default {
       columns,
       pagesNumber: computed(() => Math.ceil(rows.length / pagination.rowsPerPage)),
       fetchData,
-      // fetchData() {
-      //   teacherApi.pageList(this.page, this.limit, this.searchObj).then(response => {
-      //     this.list = response.data.rows
-      //     this.total = response.data.total
-      //   })
-      // },
     }
   },
 }

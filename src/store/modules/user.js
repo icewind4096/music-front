@@ -1,6 +1,7 @@
  import {getCurrentUser, getToken, removeCurrentUser, removeToken, setCurrentUser, setToken} from "../../utils/auth.js";
  import {createToken} from "../../api/token.js";
  import {me} from "../../api/user.js";
+ import {useStore} from "vuex";
 
 const user = {
     namespaced: true,
@@ -13,7 +14,8 @@ const user = {
         login({commit}, {username, password}){
             return new Promise((resolve, reject) => {
                 createToken(username.trim(), password.trim())
-                    .then(token => {
+                    .then(responseData => {
+                        const token = responseData.items;
                         commit('SET_TOKEN', token);
                         setToken(token);
                         resolve();
@@ -25,16 +27,16 @@ const user = {
         },
         logout({commit}){
             commit('SET_TOKEN', '');
-            commit('SET_ROLES', [])
+            commit('SET_CURRENT_USER', null);
             removeToken();
             removeCurrentUser();
         },
         fetchCurrentUser({commit}){
             return new Promise((resolve, reject) => {
                 me().then(responseData => {
-                    commit('SET_CURRENT_USER', responseData.data.item);
-                    setCurrentUser(responseData.data.item)
-                    resolve(responseData);
+                    commit('SET_CURRENT_USER', responseData.item);
+                    setCurrentUser(responseData.item)
+                    resolve(responseData.item);
                 })
                 .catch(error => {
                     reject(error);
@@ -55,8 +57,11 @@ const user = {
     },
     getters: {
         nicknameFirstWord(state){
-            return state.currentUser.nickName == null ? "" : state.currentUser.nickName.charAt(0).toUpperCase();
+            return state.currentUser == null ? "" : state.currentUser.nickName.charAt(0).toUpperCase();
         },
+        nickName(state){
+            return state.currentUser == null ? "" : state.currentUser.nickName;
+        }
     },
 }
 

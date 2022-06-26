@@ -15,11 +15,8 @@ export default {
     const store = useStore()
     return {
       nickname: computed(()=> {
-            return store.state.user.nickname
-      }),
-      logout: () => {
-        store.dispatch('user/logout').then(()=>window.location.reload())
-      }
+        return store.getters['user/nickName'];
+      })
     }
   },
 }
